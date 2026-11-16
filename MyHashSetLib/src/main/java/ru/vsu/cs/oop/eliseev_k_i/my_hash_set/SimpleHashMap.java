@@ -31,4 +31,26 @@ public class SimpleHashMap<K, V> {
         }
         return Math.abs(key.hashCode()) % buckets.length;
     }
+
+    public void put(K key, V value) {
+        int index = getIndex(key);
+        for (Entry<K, V> entry : buckets[index]) {
+            if (entry.key.equals(key)) {
+                entry.value = value;
+                return;
+            }
+        }
+        buckets[index].add(new Entry<>(key, value));
+        size++;
+    }
+
+    public V get(K key) {
+        int index = getIndex(key);
+        for (Entry<K, V> entry : buckets[index]) {
+            if (entry.key.equals(key)) {
+                return entry.value;
+            }
+        }
+        return null;
+    }
 }
