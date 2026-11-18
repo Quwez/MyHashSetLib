@@ -1,6 +1,8 @@
 package ru.vsu.cs.oop.eliseev_k_i.my_hash_set;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SimpleHashMap<K, V> {
@@ -85,5 +87,63 @@ public class SimpleHashMap<K, V> {
             bucket.clear();
         }
         size = 0;
+    }
+
+    public Iterator<K> keyIterator() {
+        return new Iterator<K>() {
+            private int bucketIndex = 0;
+            private int entryIndex = 0;
+            private int returnedCount = 0;
+
+            @Override
+            public boolean hasNext() {
+                return returnedCount < size;
+            }
+
+            @Override
+            public K next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                while (bucketIndex < buckets.length && entryIndex >= buckets[bucketIndex].size()) {
+                    bucketIndex++;
+                    entryIndex = 0;
+                }
+                K key = buckets[bucketIndex].get(entryIndex).key;
+                entryIndex++;
+                returnedCount++;
+                return key;
+            }
+        };
+    }
+
+    public String keysToString() {
+        StringBuilder sb = new StringBuilder("[");
+        Iterator<K> it = keyIterator();
+        while (it.hasNext()) {
+            sb.append(it.next());
+            if (it.hasNext()) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("{");
+        boolean first = true;
+        for (LinkedList<Entry<K, V>> bucket : buckets) {
+            for (Entry<K, V> entry : bucket) {
+                if (!first) {
+                    sb.append(", ");
+                }
+                sb.append(entry.key).append("=").append(entry.value);
+                first = false;
+            }
+        }
+        sb.append("}");
+        return sb.toString();
     }
 }
