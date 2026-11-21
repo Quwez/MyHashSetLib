@@ -1,6 +1,8 @@
 package ru.vsu.cs.oop.eliseev_k_i.my_hash_set;
 
-public class MyHashSet<T> {
+import java.util.Iterator;
+
+public class MyHashSet<T> implements Iterable<T> {
     private SimpleHashMap<T, Boolean> data;
 
     public MyHashSet() {
@@ -37,5 +39,15 @@ public class MyHashSet<T> {
 
     public void clear() {
         data.clear();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return data.keyIterator();
+    }
+
+    @Override
+    public String toString() {
+        return data.keysToString();
     }
 }
