@@ -1,8 +1,8 @@
 package ru.vsu.cs.oop.eliseev_k_i.my_hash_set;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class MyHashSet<T> implements Iterable<T> {
@@ -76,31 +76,11 @@ public class MyHashSet<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private int bucketIndex = 0;
-            private int itemIndex = 0;
-            private int returnedCount = 0;
-
-            @Override
-            public boolean hasNext() {
-                return returnedCount < size;
-            }
-
-            @Override
-            public T next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                while (bucketIndex < buckets.length && itemIndex >= buckets[bucketIndex].size()) {
-                    bucketIndex++;
-                    itemIndex = 0;
-                }
-                T element = buckets[bucketIndex].get(itemIndex);
-                itemIndex++;
-                returnedCount++;
-                return element;
-            }
-        };
+        LinkedList<T> all = new LinkedList<>();
+        for (LinkedList<T> bucket : buckets) {
+            all.addAll(bucket);
+        }
+        return Collections.unmodifiableList(all).iterator();
     }
 
     @Override
