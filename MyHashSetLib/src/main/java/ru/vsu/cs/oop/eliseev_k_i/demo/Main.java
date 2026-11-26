@@ -16,6 +16,7 @@ public class Main {
             System.out.println("\n=== Главное меню ===");
             System.out.println("1. Работа с MyHashSet");
             System.out.println("2. Работа с MyHashMultiSet");
+            System.out.println("3. Быстрая авто-демонстрация");
             System.out.println("0. Выход");
             System.out.print("Выберите пункт: ");
 
@@ -24,6 +25,8 @@ public class Main {
                 runHashSetMenu(set);
             } else if (choice.equals("2")) {
                 runHashMultiSetMenu(multiSet);
+            } else if (choice.equals("3")) {
+                runDemoScenario();
             } else if (choice.equals("0")) {
                 System.out.println("Выход из программы.");
                 break;
@@ -152,5 +155,38 @@ public class Main {
                     System.out.println("Неверный пункт меню.");
             }
         }
+    }
+
+    private static void runDemoScenario() {
+        System.out.println("\n--- Авто-демонстрация MyHashSet ---");
+        MyHashSet<String> demoSet = new MyHashSet<>();
+        demoSet.add("apple");
+        demoSet.add("banana");
+        demoSet.add("apple"); // дубликат не добавится
+        demoSet.add(null);
+        System.out.println("Содержимое: " + demoSet + ", размер: " + demoSet.size());
+        System.out.println("Есть 'banana': " + demoSet.contains("banana"));
+        demoSet.remove("banana");
+        System.out.print("После удаления 'banana' (for-each): ");
+        for (String s : demoSet) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
+
+        System.out.println("\n--- Авто-демонстрация MyHashMultiSet ---");
+        MyHashMultiSet<String> demoMulti = new MyHashMultiSet<>();
+        demoMulti.add("apple");
+        demoMulti.add("apple");
+        demoMulti.add("banana");
+        demoMulti.add(null);
+        System.out.println("Содержимое: " + demoMulti + ", всего элементов: " + demoMulti.size());
+        System.out.println("Количество 'apple': " + demoMulti.count("apple"));
+        demoMulti.remove("apple");
+        System.out.println("После удаления одного 'apple': " + demoMulti + ", count='apple': " + demoMulti.count("apple"));
+        System.out.print("Обход for-each: ");
+        for (String s : demoMulti) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
     }
 }
